@@ -3,95 +3,101 @@
 //Initialize the quantety that we will have in our array.
 //Assign data to each index of the array.
 //for loop. The For loop would go through all the integers. The for loops job is only to count and do somethin a certain amount of time.
-int [] Y = new int[1024];
-int [] X = new int[1024];
+boolean isVisible = true;
 PImage tileImg;
+PImage bomb;
 Tile[] GameBoard;
-boolean A=false;
-boolean B=false;
+float Bomb;
+int Scene = 1; 
+int Visiblecount = 0;
 void setup()
 {
+  imageMode(CENTER);
+  bomb = loadImage("bomb.png");
+  bomb.resize(24, 24);
+
   tileImg = loadImage("Tile.png");
   size(800, 800);
   //instance
   //Tile T = new Tile();
   GameBoard = new Tile[1024];
-  int i = 0;
 
+
+  int i = 0;
   for (int y=0; y<32; y++)
   {
     for (int x=0; x<32; x++)
     {
-
-      X[32*y+x] = x*25;
-      Y[32*y+x] = y*25;
       GameBoard[i] = new Tile(tileImg, x*25, y*25);
       i++;
     }
   }
-  print(Y[32]);
-  print(X[32]);
 } 
 
 void draw()
 {
 
-  if (mouseX< 25 &&mouseX> 0);
+  if (Scene == 1)
   {
-    if (mouseY< 25 &&mouseY> 0);
+    Scene1();
+  } else if (Scene == 2)
+  {
+    Scene2();
+  } else if (Scene == 3)
+  {
+    Scene3();
+  }
+}
+
+void Scene1()
+{
+  Visiblecount=0;
+  background(0);
+  image(bomb, 50, 50);
+  for (int i=0; i < GameBoard.length; i++)
+  { 
+    if ( GameBoard[i].isVisible == false)
     {
-      A=true;
+      Visiblecount +=1;
     }
   }
   for (int i=0; i < GameBoard.length; i++)
   {  
-    if (A==true&&i==0&&B==true)
-    {  
-      A=false;
-      B=false;
-    } else
+
+    if (mousePressed)
     {
-      GameBoard[i].Draw();
+      if (dist(mouseX, mouseY, GameBoard[i]._position.x, GameBoard[i]._position.y )<12.5)
+      {
+        GameBoard[i].isVisible = false;
+      }
     }
+
+    GameBoard[i].Draw();
   }
+
+  for (int i = 0; i<GameBoard.length; i++)
+  {
+    Bomb = random(50);
+
+    //ellipse(random(1000), i, BombX+Bomb, BombY);
+  }
+
+  //if (dist(mouseX, mouseY, BombX, BombY)<10)
+  //{
+
+  // }
 }
 
-void mouseClicked()
+void Scene2()
 {
-  B=true;
+  background(0);
+  text("Game Over", 200, 400);
+  textSize(100);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//  for(int y=0; y<32; y++)
-// {
-//for (int x=0; x<32; x++)
-//{
-// image(tileImg, x*25, y*25);
-// }
-// }
+void Scene3()
+{
+  background(0);
+  text("congrats you won", 100, 400);
+  textSize(100);
+}
